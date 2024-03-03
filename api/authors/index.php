@@ -7,13 +7,14 @@
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
         header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
         exit();
-    } elseif ($method === 'GET') {
-        require('./read.php');
-        require('./read_single.php');
+    } elseif ($method === 'GET' && !$_SERVER['QUERY_STRING']) {
+        include('./read.php');
+    } elseif ($method === 'GET' && $_SERVER['QUERY_STRING']) {
+        include('./read_single.php');
     } elseif ($method === 'POST') {
-        require('./create.php');
+        include('./create.php');
     } elseif ($method === 'PUT') {
-        require('./update.php');
+        include('./update.php');
     } elseif ($method === 'DELETE') {
-        require('./delete.php');
+        include('./delete.php');
     }
