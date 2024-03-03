@@ -8,13 +8,13 @@
         header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
         exit();
     } elseif ($method === 'GET' && !isset($_GET['id'])) {
-        include('./read.php');
+        include_once('./read.php');
     } elseif ($method === 'GET' && isset($_GET['id'])) {
-        include('./read_single.php');
+        include_once('./read_single.php');
     } elseif ($method === 'POST') {
-        include('./create.php');
+        include_once('./create.php');
     } elseif ($method === 'PUT') {
-        include('./update.php');
+        include_once('./update.php');
     } elseif ($method === 'DELETE') {
-        include('./delete.php');
+        include_once('./delete.php');
     }

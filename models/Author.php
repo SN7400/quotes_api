@@ -4,7 +4,7 @@
         private $conn;
         private $table = 'authors';
 
-        // Post Properties
+        // Author Properties
         public $id;
         public $author;
 
