@@ -12,7 +12,7 @@
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate blog author object
+    // Instantiate author object
     $author = new Author($db);
 
     // Get raw authored data
@@ -23,7 +23,7 @@
     // Create author
     if($author->create()) {
         echo json_encode(
-            array('message' => 'created author (' . $this->id . ', ' . $this->author . ')')
+            array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
         );
     } else {
         echo json_encode(

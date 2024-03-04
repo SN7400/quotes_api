@@ -60,9 +60,7 @@
         // Create author
         public function create() {
             // Create query
-            $query = 'INSERT INTO ' . $this->table . '
-                (author)
-                VALUES (:author)';
+            $query = 'INSERT INTO ' . $this->table . ' (author) VALUES (:author)';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
