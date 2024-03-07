@@ -1,28 +1,28 @@
 <?php
     class Database {
         private $conn;
-        private $host;
-        private $port;
-        private $db_name;
-        private $user;
-        private $password;
+        private $dbhost;
+        private $dbport;
+        private $dbname;
+        private $dbuser;
+        private $dbpass;
 
         public function __construct() {
-            $this->user = getenv('USER');
-            $this->password = getenv('PASSWORD');
+            $this->dbuser = getenv('DBUSER');
+            $this->dbpass = getenv('DBPASS');
             $this->dbname = getenv('DBNAME');
-            $this->host = getenv('HOST');
-            $this->port = getenv('PORT');
+            $this->dbhost = getenv('DBHOST');
+            $this->dbport = getenv('DBPORT');
         }
 
         public function connect() {
             if ($this->conn) {
                 return $this->conn;
             } else {
-                $dsn = "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}";
+                $dsn = "pgsql:host={$this->dbhost};port={$this->dbport};dbname={$this->dbname}";
 
                 try {
-                    $this->conn = new PDO($dsn, $this->user, $this->password);
+                    $this->conn = new PDO($dsn, $this->dbuser, $this->dbpass);
                     $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     return $this->conn;
                 } catch(PDOException $e) {
