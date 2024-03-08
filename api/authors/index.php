@@ -1,7 +1,11 @@
 <?php
     header('Access-Control-Allow-Origin: *');
     header('Content-Type: application/json');
+
     $method = $_SERVER['REQUEST_METHOD'];
+
+    // Get raw authored data
+    $data = json_decode(file_get_contents("php://input"));
 
     if ($method === 'OPTIONS') {
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
