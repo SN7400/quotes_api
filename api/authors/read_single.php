@@ -19,6 +19,21 @@
     // Get author
     $author->read_single();
 
+    if(!$author->id) {
+        echo json_encode(
+            array('message' => 'author_id Not Found')
+        );
+    } else {
+        // Create array
+        $author_arr = array(
+            'id' => $author->id,
+            'author' => $author->author,
+        );
+
+        // Make JSON
+        print_r(json_encode($author_arr));
+    }
+
     // Create array
     /* $author_arr = array(
         'id' => $author->id,
@@ -27,13 +42,11 @@
 
     // Make JSON
     print_r(json_encode($author_arr));
-    */
-        // Create author
+    // Create author
     if($author->read_single()) {
-        //echo json_encode(
-        //    array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
-        //);
-        // Create array
+        echo json_encode(
+            array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
+        );
         $author_arr = array(
             'id' => $author->id,
             'author' => $author->author,
@@ -45,4 +58,4 @@
         echo json_encode(
             array('message' => 'author_id Not Found')
         );
-    }
+    } */
