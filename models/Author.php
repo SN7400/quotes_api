@@ -61,23 +61,36 @@
         public function create() {
             // Create query
             $query = 'INSERT INTO ' . $this->table . ' (author) VALUES (:author)';
+            $query2 = 'SELECT max(id) FROM ' . $this->table . ' WHERE id in (SELECT id FROM ' . $this->table . ' WHERE author = :author)';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
+            $stmt2 = $this->conn->prepare($query2);
 
             // Clean data
             $this->author = htmlspecialchars(strip_tags($this->author));
 
             // Bind data
             $stmt->bindParam(':author', $this->author);
+            $stmt2->bindParam(':author', $this->author);
 
             // Execute query
             if($stmt->execute()) {
-                return true;
+                if($stmt2->execute()) {
+                    // Retrieve results of SELECT query to get id and author
+                    $row = $stmt2->fetch(PDO::FETCH_ASSOC);
+                    // Set properties
+                    $this->id = $row['max'];
+                    return true;
+                }
             }
             
             // Print error if something goes wrong
-            printf("Error: $s.\n", $stmt->error);
+            if($stmt->error) {
+                printf("Error: $s.\n", $stmt->error);
+            } elseif ($stmt2->error) {
+                printf("Error: $s.\n", $stmt2->error);
+            }
 
             return false;
         }
