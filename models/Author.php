@@ -98,8 +98,8 @@
         // Update author
         public function update() {
             // Create query
-            $query = 'UPDATE ' . $this->table . ' SET (author)
-                = (:author)
+            $query = 'UPDATE ' . $this->table . ' SET author
+                = :author
                 WHERE
                     id = :id';
 

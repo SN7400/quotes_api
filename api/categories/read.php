@@ -4,43 +4,41 @@
     header('Content-Type: application/json');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Author.php';
+    include_once '../../models/Category.php';
 
     // Instantiate DB
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate author object
-    $author = new Author($db);
+    // Instantiate Category object
+    $category = new Category($db);
 
     // Author query
-    $result = $author->read();
+    $result = $category->read();
     // Get row count
     $num = $result->rowCount();
 
-    // Check if any authors
+    // Check if any categories
     if($num > 0) {
-        // Author array
-        $authors_arr = array();
-        $authors_arr['data'] = array();
+        $categories_arr = array();
 
         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
 
-            $author_item = array(
+            $category_item = array(
                 'id' => $id,
-                'author' => $author,
+                'category' => $category,
             );
 
             // Push to "data"
-            array_push($authors_arr['data'], $author_item);
+            array_push($categories_arr/*['data']*/, $category_item);
         }
 
         // Turn to JSON & output
-        echo json_encode($authors_arr);
+        echo json_encode($categories_arr);
     } else {
-        // No authors
+        // No categories
         echo json_encode(
-            array('message' => 'author_id Not Found')
+            array('message' => 'category_id Not Found')
         );
     }

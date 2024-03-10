@@ -4,26 +4,32 @@
     header('Content-Type: application/json');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Author.php';
+    include_once '../../models/Category.php';
 
     // Instantiate DB
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate Author object
-    $author = new Author($db);
+    // Instantiate Category object
+    $category = new Category($db);
 
     // Get ID
-    $author->id = isset($_GET['id']) ? $_GET['id'] : die();
+    $category->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-    // Get author
-    $author->read_single();
+    // Get category
+    $category->read_single();
 
-    // Create array
-    $author_arr = array(
-        'id' => $author->id,
-        'author' => $author->author,
-    );
+    if(!$category->category) {
+        echo json_encode(
+            array('message' => 'category_id Not Found')
+        );
+    } else {
+        // Create array
+        $category_arr = array(
+            'id' => $category->id,
+            'category' => $category->category,
+        );
 
-    // Make JSON
-    print_r(json_encode($author_arr));
+        // Make JSON
+        print_r(json_encode($category_arr));
+    }
