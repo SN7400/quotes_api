@@ -54,7 +54,9 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // Set properties
-            $this->author = $row['author'];
+            if($row) {
+                $this->author = $row['author'];
+            }
         }
 
         // Create author
@@ -98,10 +100,7 @@
         // Update author
         public function update() {
             // Create query
-            $query = 'UPDATE ' . $this->table . ' SET author
-                = :author
-                WHERE
-                    id = :id';
+            $query = 'UPDATE ' . $this->table . ' SET author = :author WHERE id = :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -116,6 +115,7 @@
 
             // Execute query
             if($stmt->execute()) {
+                //$stmt->debugDumpParams();
                 return true;
             }
             

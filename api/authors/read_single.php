@@ -19,7 +19,7 @@
     // Get author
     $author->read_single();
 
-    if(!$author->author) {
+    if(!isset($author->author)) {
         echo json_encode(
             array('message' => 'author_id Not Found')
         );

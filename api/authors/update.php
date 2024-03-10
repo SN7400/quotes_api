@@ -16,24 +16,33 @@
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );
-    } elseif (false) { // ADD check that author id exists
-
     } else {
         // Instantiate Author object
         $author = new Author($db);
 
-        // Set parameters for update
+        // Set id for update
         $author->id = $data->id;
-        $author->author = $data->author;
 
-        // Update author
-        $author->update();
-        // Create array
-        $author_arr = array(
-            'id' => $author->id,
-            'author' => $author->author,
-        );
+        // Check if author_id exists
+        $author->read_single();
+        if(isset($author->author)) {
+            // Set author for update
+            $author->author = $data->author;
+            // Update author
+            $author->update();
+            // Read updated record and prepare array
+            $author->read_single();
+            $author_arr = array(
+                'id' => $author->id,
+                'author' => $author->author,
+            );
+            // Make JSON
+            print_r(json_encode($author_arr));
+        } else {
+            // Return message from read_single() that author_id is not found
+            echo json_encode(
+                array('message' => 'author_id Not Found')
+            );
+        }
 
-        // Make JSON
-        print_r(json_encode($author_arr));
     }
