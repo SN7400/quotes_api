@@ -17,11 +17,12 @@
     $author->author = $data->author;
 
     // Create author
-    if($author->create()) {
-        //echo json_encode(
-        //    array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
-        //);
-        // Create array
+
+    if(!author->author) {
+        echo json_encode(
+            array('message' => 'Missing Required Parameters')
+        );
+    } else {
         $author_arr = array(
             'id' => $author->id,
             'author' => $author->author,
@@ -29,10 +30,17 @@
 
         // Make JSON
         print_r(json_encode($author_arr));
-    } else {
-        echo json_encode(
-            array('message' => 'author_id Not Found')
-        );
     }
+    /*
+    if($author->create()) {
+        echo json_encode(
+            array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
+        );
+        Create array
+
+    } else {
+
+    }
+    */
 
         

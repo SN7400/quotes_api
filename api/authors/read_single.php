@@ -33,29 +33,3 @@
         // Make JSON
         print_r(json_encode($author_arr));
     }
-
-    // Create array
-    /* $author_arr = array(
-        'id' => $author->id,
-        'author' => $author->author,
-    );
-
-    // Make JSON
-    print_r(json_encode($author_arr));
-    // Create author
-    if($author->read_single()) {
-        echo json_encode(
-            array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
-        );
-        $author_arr = array(
-            'id' => $author->id,
-            'author' => $author->author,
-        );
-
-        // Make JSON
-        print_r(json_encode($author_arr));
-    } else {
-        echo json_encode(
-            array('message' => 'author_id Not Found')
-        );
-    } */
