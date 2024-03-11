@@ -1,6 +1,6 @@
 CREATE TABLE categories (
     id SERIAL PRIMARY KEY,
-    category varchar(255) NOT NULL
+    category varchar(20) NOT NULL
 );
 
 INSERT INTO categories (category) VALUES
@@ -16,7 +16,7 @@ INSERT INTO categories (category) VALUES
 
 CREATE TABLE authors (
     id SERIAL PRIMARY KEY,
-    author varchar(255) NOT NULL
+    author varchar(50) NOT NULL
 );
 
 INSERT INTO authors (author) VALUES
