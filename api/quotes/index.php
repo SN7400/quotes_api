@@ -10,7 +10,6 @@
     if ($method === 'OPTIONS') {
         header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
         header('Access-Control-Allow-Headers: Origin, Accept, Content-Type, X-Requested-With');
-        exit();
     } elseif ($method === 'GET' && !isset($_GET['id'])) {
         include_once('./read.php');
     } elseif ($method === 'GET' && isset($_GET['id'])) {
@@ -22,3 +21,5 @@
     } elseif ($method === 'DELETE') {
         include_once('./delete.php');
     }
+
+    exit();

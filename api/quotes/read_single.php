@@ -19,11 +19,17 @@
     // Get author
     $author->read_single();
 
-    // Create array
-    $author_arr = array(
-        'id' => $author->id,
-        'author' => $author->author,
-    );
+    if(!isset($author->author)) {
+        echo json_encode(
+            array('message' => 'author_id Not Found')
+        );
+    } else {
+        // Create array
+        $author_arr = array(
+            'id' => $author->id,
+            'author' => $author->author,
+        );
 
-    // Make JSON
-    print_r(json_encode($author_arr));
+        // Make JSON
+        print_r(json_encode($author_arr));
+    }

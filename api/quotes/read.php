@@ -4,43 +4,43 @@
     header('Content-Type: application/json');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Author.php';
+    include_once '../../models/Quote.php';
 
     // Instantiate DB
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate author object
-    $author = new Author($db);
+    // Instantiate quote object
+    $quote = new Quote($db);
 
-    // Author query
-    $result = $author->read();
+    // Quote query
+    $result = $quote->read();
     // Get row count
     $num = $result->rowCount();
 
-    // Check if any authors
+    // Check if any quotes
     if($num > 0) {
-        // Author array
-        $authors_arr = array();
-        $authors_arr['data'] = array();
-
+        // Quote array
+        $quotes_arr = array();
         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
 
-            $author_item = array(
+            $quote_item = array(
                 'id' => $id,
+                'quote' => $quote,
                 'author' => $author,
+                'category' => $category
             );
 
             // Push to "data"
-            array_push($authors_arr['data'], $author_item);
+            array_push($quotes_arr, $quote_item);
         }
 
         // Turn to JSON & output
-        echo json_encode($authors_arr);
+        echo json_encode($quotes_arr);
     } else {
-        // No authors
+        // No quotes
         echo json_encode(
-            array('message' => 'author_id Not Found')
+            array('message' => 'quote_id Not Found')
         );
     }

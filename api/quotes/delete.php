@@ -5,33 +5,40 @@
     header('Access-Control-Allow-Methods: DELETE');
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-    /*
     include_once '../../config/Database.php';
-    include_once '../../models/Post.php';
+    include_once '../../models/Author.php';
 
     // Instantiate DB & connect
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate blog post object
-    $post = new Post($db);
-
-    // Get raw posted data
-    $data = json_decode(file_get_contents("php://input"));
-
-    // Set ID to update
-    $post->id = $data->id;
-
-    // Delete post
-    if($post->delete()) {
+    if(!isset($data) || !isset($data->id)) {
         echo json_encode(
-            array('message' => 'Post Deleted')
+            array('message' => 'Missing Required Parameters')
         );
     } else {
-        echo json_encode(
-            array('message' => 'Post Not Deleted')
-        );
-    }
-    */
+        // Instantiate Author object
+        $author = new Author($db);
 
-    echo json_encode(array('message' => 'Not implemented yet'));
+        // Set id for update
+        $author->id = $data->id;
+
+        // Check if author_id exists
+        $author->read_single();
+        if(isset($author->author)) {
+            // Save ID
+            $id = $author->id;
+            // Delete author
+            $author->delete();
+            $author_arr = array(
+                'id' => $id,
+            );
+            // Make JSON
+            print_r(json_encode($author_arr));
+        } else {
+            // Return message from read_single() that author_id is not found
+            echo json_encode(
+                array('message' => 'author_id Not Found')
+            );
+        }
+    }

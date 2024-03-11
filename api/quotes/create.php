@@ -8,21 +8,24 @@
     include_once '../../config/Database.php';
     include_once '../../models/Author.php';
 
-    // Instantiate DB & connect
-    $database = new Database();
-    $db = $database->connect();
-
-    // Instantiate author object
-    $author = new Author($db);
-    $author->author = $data->author;
-
-    // Create author
-    if($author->create()) {
-        echo json_encode(
-            array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
-        );
-    } else {
+    if(!isset($data) || !isset($data->author)) {
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );
+    } else {
+        // Instantiate DB & connect
+        $database = new Database();
+        $db = $database->connect();
+
+        // Instantiate author object
+        $author = new Author($db);
+        $author->author = $data->author;
+        $author->create();
+        $author_arr = array(
+            'id' => $author->id,
+            'author' => $author->author,
+        );
+
+        // Make JSON
+        print_r(json_encode($author_arr));
     }

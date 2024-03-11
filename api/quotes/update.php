@@ -5,38 +5,44 @@
     header('Access-Control-Allow-Methods: PUT');
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-    /*
     include_once '../../config/Database.php';
-    include_once '../../models/Post.php';
+    include_once '../../models/Author.php';
 
     // Instantiate DB & connect
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate blog post object
-    $post = new Post($db);
-
-    // Get raw posted data
-    $data = json_decode(file_get_contents("php://input"));
-
-    // Set ID to update
-    $post->id = $data->id;
-
-    $post->title = $data->title;
-    $post->body = $data->body;
-    $post->author = $data->author;
-    $post->category_id = $data->category_id;
-
-    // Update post
-    if($post->update()) {
+    if(!isset($data) || !isset($data->id) || !isset($data->author)) {
         echo json_encode(
-            array('message' => 'Post Updated')
+            array('message' => 'Missing Required Parameters')
         );
     } else {
-        echo json_encode(
-            array('message' => 'Post Not Updated')
-        );
-    }
-    */
+        // Instantiate Author object
+        $author = new Author($db);
 
-    echo json_encode(array('message' => 'Not implemented yet'));
+        // Set id for update
+        $author->id = $data->id;
+
+        // Check if author_id exists
+        $author->read_single();
+        if(isset($author->author)) {
+            // Set author for update
+            $author->author = $data->author;
+            // Update author
+            $author->update();
+            // Read updated record and prepare array
+            $author->read_single();
+            $author_arr = array(
+                'id' => $author->id,
+                'author' => $author->author,
+            );
+            // Make JSON
+            print_r(json_encode($author_arr));
+        } else {
+            // Return message from read_single() that author_id is not found
+            echo json_encode(
+                array('message' => 'author_id Not Found')
+            );
+        }
+
+    }
