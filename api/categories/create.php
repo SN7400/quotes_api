@@ -6,23 +6,26 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Author.php';
+    include_once '../../models/Category.php';
 
-    // Instantiate DB & connect
-    $database = new Database();
-    $db = $database->connect();
-
-    // Instantiate author object
-    $author = new Author($db);
-    $author->author = $data->author;
-
-    // Create author
-    if($author->create()) {
-        echo json_encode(
-            array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
-        );
-    } else {
+    if(!isset($data) || !isset($data->category)) {
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );
+    } else {
+        // Instantiate DB & connect
+        $database = new Database();
+        $db = $database->connect();
+
+        // Instantiate category object
+        $category = new Category($db);
+        $category->category = $data->category;
+        $category->create();
+        $category_arr = array(
+            'id' => $category->id,
+            'category' => $category->category,
+        );
+
+        // Make JSON
+        print_r(json_encode($category_arr));
     }

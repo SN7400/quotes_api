@@ -19,7 +19,7 @@
     // Get category
     $category->read_single();
 
-    if(!$category->category) {
+    if(!isset($category->category)) {
         echo json_encode(
             array('message' => 'category_id Not Found')
         );

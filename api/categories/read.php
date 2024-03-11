@@ -10,17 +10,19 @@
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate Category object
+    // Instantiate category object
     $category = new Category($db);
 
-    // Author query
+    // Category query
     $result = $category->read();
     // Get row count
     $num = $result->rowCount();
 
     // Check if any categories
     if($num > 0) {
+        // Category array
         $categories_arr = array();
+        //$categories_arr['data'] = array();
 
         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
             extract($row);

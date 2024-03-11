@@ -29,16 +29,3 @@
         // Make JSON
         print_r(json_encode($author_arr));
     }
-    /*
-    if($author->create()) {
-        echo json_encode(
-            array('message' => 'created author (' . $author->id . ', ' . $author->author . ')')
-        );
-        Create array
-
-    } else {
-
-    }
-    */
-
-        

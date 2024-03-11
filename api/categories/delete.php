@@ -5,33 +5,40 @@
     header('Access-Control-Allow-Methods: DELETE');
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
-    /*
     include_once '../../config/Database.php';
-    include_once '../../models/Post.php';
+    include_once '../../models/Category.php';
 
     // Instantiate DB & connect
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate blog post object
-    $post = new Post($db);
-
-    // Get raw posted data
-    $data = json_decode(file_get_contents("php://input"));
-
-    // Set ID to update
-    $post->id = $data->id;
-
-    // Delete post
-    if($post->delete()) {
+    if(!isset($data) || !isset($data->id)) {
         echo json_encode(
-            array('message' => 'Post Deleted')
+            array('message' => 'Missing Required Parameters')
         );
     } else {
-        echo json_encode(
-            array('message' => 'Post Not Deleted')
-        );
-    }
-    */
+        // Instantiate Category object
+        $category = new Category($db);
 
-    echo json_encode(array('message' => 'Not implemented yet'));
+        // Set id for update
+        $category->id = $data->id;
+
+        // Check if category_id exists
+        $category->read_single();
+        if(isset($category->category)) {
+            // Save ID
+            $id = $category->id;
+            // Delete category
+            $category->delete();
+            $category_arr = array(
+                'id' => $id,
+            );
+            // Make JSON
+            print_r(json_encode($category_arr));
+        } else {
+            // Return message from read_single() that category_id is not found
+            echo json_encode(
+                array('message' => 'category_id Not Found')
+            );
+        }
+    }
