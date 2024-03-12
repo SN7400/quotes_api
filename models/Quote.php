@@ -43,12 +43,16 @@
         public function read_single() {
             // Create query
             $query = 'SELECT 
-                a.id,
-                a.quote
+                q.id,
+                q.quote,
+                a.author,
+                c.category
                 FROM
-                ' . $this->table . ' a
+                ' . $this->table . ' q
+                INNER JOIN ' . $this->table2 . ' a ON q.author_id = a.id
+                INNER JOIN ' . $this->table3 . ' c ON q.category_id = c.id
                 WHERE
-                    a.id = ?;';
+                    q.id = ?;';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -63,7 +67,10 @@
 
             // Set properties
             if($row) {
+                $this->id = $row['id'];
                 $this->quote = $row['quote'];
+                $this->author = $row['author'];
+                $this->category = $row['category'];
             }
         }
 

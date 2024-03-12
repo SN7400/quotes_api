@@ -4,32 +4,34 @@
     header('Content-Type: application/json');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Author.php';
+    include_once '../../models/Quote.php';
 
     // Instantiate DB
     $database = new Database();
     $db = $database->connect();
 
-    // Instantiate Author object
-    $author = new Author($db);
+    // Instantiate Quote object
+    $quote = new Quote($db);
 
     // Get ID
-    $author->id = isset($_GET['id']) ? $_GET['id'] : die();
+    $quote->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-    // Get author
-    $author->read_single();
+    // Get quote
+    $quote->read_single();
 
-    if(!isset($author->author)) {
+    if(!isset($quote->quote)) {
         echo json_encode(
-            array('message' => 'author_id Not Found')
+            array('message' => 'quote_id Not Found')
         );
     } else {
         // Create array
-        $author_arr = array(
-            'id' => $author->id,
-            'author' => $author->author,
+        $quote_arr = array(
+            'id' => $quote->id,
+            'quote' => $quote->quote,
+            'author' => $quote->author,
+            'category' => $quote->category
         );
 
         // Make JSON
-        print_r(json_encode($author_arr));
+        print_r(json_encode($quote_arr));
     }
