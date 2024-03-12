@@ -21,7 +21,7 @@
 
     if(!isset($quote->quote)) {
         echo json_encode(
-            array('message' => 'quote_id Not Found')
+            array('message' => 'No Quotes Found')
         );
     } else {
         // Create array

@@ -2,15 +2,17 @@
     class Quote {
         // DB stuff
         private $conn;
-        private $table = 'quotes';
-        private $table2 = 'authors';
-        private $table3 = 'categories';
+        private $qtable = 'quotes';
+        private $atable = 'authors';
+        private $ctable = 'categories';
 
         // Quote Properties
         public $id;
         public $quote;
         public $author;
+        public $author_id;
         public $category;
+        public $category_id;
 
         // Constructor with DB
         public function __construct($db) {
@@ -26,9 +28,9 @@
                 a.author,
                 c.category
                 FROM
-                ' . $this->table . ' q
-                INNER JOIN ' . $this->table2 . ' a ON q.author_id = a.id
-                INNER JOIN ' . $this->table3 . ' c ON q.category_id = c.id';
+                ' . $this->qtable . ' q
+                INNER JOIN ' . $this->atable . ' a ON q.author_id = a.id
+                INNER JOIN ' . $this->ctable . ' c ON q.category_id = c.id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -48,17 +50,17 @@
                 a.author,
                 c.category
                 FROM
-                ' . $this->table . ' q
-                INNER JOIN ' . $this->table2 . ' a ON q.author_id = a.id
-                INNER JOIN ' . $this->table3 . ' c ON q.category_id = c.id
+                ' . $this->qtable . ' q
+                INNER JOIN ' . $this->atable . ' a ON q.author_id = a.id
+                INNER JOIN ' . $this->ctable . ' c ON q.category_id = c.id
                 WHERE
-                    q.id = ?;';
+                    q.id = :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Bind ID
-            $stmt->bindParam(1, $this->id);
+            $stmt->bindParam(':id', $this->id);
 
             //Execute query
             $stmt->execute();
@@ -77,8 +79,8 @@
         // Create quote
         public function create() {
             // Create query
-            $query = 'INSERT INTO ' . $this->table . ' (quote) VALUES (:quote)';
-            $query2 = 'SELECT max(id) FROM ' . $this->table . ' WHERE id in (SELECT id FROM ' . $this->table . ' WHERE quote = :quote)';
+            $query = 'INSERT INTO ' . $this->qtable . ' (quote) VALUES (:quote)';
+            $query2 = 'SELECT max(id) FROM ' . $this->qtable . ' WHERE id in (SELECT id FROM ' . $this->qtable . ' WHERE quote = :quote)';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -115,7 +117,7 @@
         // Update quote
         public function update() {
             // Create query
-            $query = 'UPDATE ' . $this->table . ' SET quote = :quote WHERE id = :id';
+            $query = 'UPDATE ' . $this->qtable . ' SET quote = :quote WHERE id = :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -143,7 +145,7 @@
         // Delete quote
         public function delete() {
             // Create query
-            $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+            $query = 'DELETE FROM ' . $this->qtable . ' WHERE id = :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);

@@ -13,6 +13,14 @@
     // Instantiate quote object
     $quote = new Quote($db);
 
+    // Get IDs
+    if(isset($_GET['author_id'])) {
+        $quote->author_id = $_GET['author_id'];
+    }
+    if(isset($_GET['category_id'])) {
+        $quote->category_id = $_GET['category_id'];
+    }
+
     // Quote query
     $result = $quote->read();
     // Get row count
