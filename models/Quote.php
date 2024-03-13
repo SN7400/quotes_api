@@ -22,7 +22,44 @@
         // Get quotes
         public function read() {
             // Create query
-            $query = 'SELECT 
+            if($this->author_id && $this->category_id) {
+                $query = 'SELECT 
+                q.id,
+                q.quote,
+                a.author,
+                c.category
+                FROM
+                ' . $this->qtable . ' q
+                INNER JOIN ' . $this->atable . ' a ON q.author_id = a.id
+                INNER JOIN ' . $this->ctable . ' c ON q.category_id = c.id
+                WHERE
+                    q.author_id = :author_id AND q.category_id = :category_id';
+            } elseif ($this->author_id) {
+                $query = 'SELECT 
+                q.id,
+                q.quote,
+                a.author,
+                c.category
+                FROM
+                ' . $this->qtable . ' q
+                INNER JOIN ' . $this->atable . ' a ON q.author_id = a.id
+                INNER JOIN ' . $this->ctable . ' c ON q.category_id = c.id
+                WHERE
+                    q.author_id = :author_id';
+            } elseif ($this->category_id) {
+                $query = 'SELECT 
+                q.id,
+                q.quote,
+                a.author,
+                c.category
+                FROM
+                ' . $this->qtable . ' q
+                INNER JOIN ' . $this->atable . ' a ON q.author_id = a.id
+                INNER JOIN ' . $this->ctable . ' c ON q.category_id = c.id
+                WHERE
+                    q.category_id = :category_id';
+            } else {
+                $query = 'SELECT 
                 q.id,
                 q.quote,
                 a.author,
@@ -31,9 +68,20 @@
                 ' . $this->qtable . ' q
                 INNER JOIN ' . $this->atable . ' a ON q.author_id = a.id
                 INNER JOIN ' . $this->ctable . ' c ON q.category_id = c.id';
+            }
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
+
+            // Bind parameters if there are any
+
+            if ($this->author_id) {
+                $stmt->bindParam(':author_id', $this->author_id);
+            }
+
+            if ($this->category_id) {
+                $stmt->bindParam(':category_id', $this->category_id);
+            }
 
             //Execute query
             $stmt->execute();
