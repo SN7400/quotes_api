@@ -23,11 +23,15 @@
 
     // Quote query
     $result = $quote->read();
-    // Get row count
-    $num = $result->rowCount();
-
-    // Check if any quotes
-    if($num > 0) {
+    if($result === 'author_id Not Found') {
+        echo json_encode(
+            array('message' => $result)
+        );
+    } elseif($result === 'category_id Not Found') {
+        echo json_encode(
+            array('message' => $result)
+        );
+    } elseif($result->rowCount() > 0) {
         // Quote array
         $quotes_arr = array();
         while($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -49,6 +53,6 @@
     } else {
         // No quotes
         echo json_encode(
-            array('message' => 'quote_id Not Found')
+            array('message' => 'No Quotes Found')
         );
     }

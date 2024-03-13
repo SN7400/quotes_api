@@ -21,6 +21,30 @@
 
         // Get quotes
         public function read() {
+            // Check if author_id exists
+            if($this->author_id) {
+                $check_query = 'SELECT EXISTS(SELECT 1 FROM authors WHERE id = :author_id LIMIT 1)';
+                $check_stmt = $this->conn->prepare($check_query);
+                $check_stmt->bindParam(':author_id', $this->author_id);
+                $check_stmt->execute();
+                $check_result = $check_stmt->fetch(PDO::FETCH_ASSOC);
+                if(!$check_result['exists']) {
+                    return 'author_id Not Found';
+                }
+            }
+
+            //Check if category_id exists
+            if($this->category_id) {
+                $check_query = 'SELECT EXISTS(SELECT 1 FROM categories WHERE id = :category_id LIMIT 1)';
+                $check_stmt = $this->conn->prepare($check_query);
+                $check_stmt->bindParam(':category_id', $this->category_id);
+                $check_stmt->execute();
+                $check_result = $check_stmt->fetch(PDO::FETCH_ASSOC);
+                if(!$check_result['exists']) {
+                    return 'category_id Not Found';
+                }
+            }
+
             // Create query
             if($this->author_id && $this->category_id) {
                 $query = 'SELECT 
@@ -74,7 +98,6 @@
             $stmt = $this->conn->prepare($query);
 
             // Bind parameters if there are any
-
             if ($this->author_id) {
                 $stmt->bindParam(':author_id', $this->author_id);
             }
