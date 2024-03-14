@@ -12,7 +12,7 @@
     $database = new Database();
     $db = $database->connect();
 
-    if(!isset($data) || !isset($data->id) || !isset($data->quote)) {
+    if(!isset($data) || !isset($data->id) || !isset($data->quote) || !isset($data->author_id) || !isset($data->category_id)) {
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );

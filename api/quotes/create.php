@@ -8,7 +8,7 @@
     include_once '../../config/Database.php';
     include_once '../../models/Quote.php';
 
-    if(!isset($data) || !isset($data->quote) || !isset($data->author) || !isset($data->category)) {
+    if(!isset($data) || !isset($data->quote) || !isset($data->author_id) || !isset($data->category_id)) {
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );
