@@ -153,7 +153,7 @@
         // Create quote
         public function create() {
             // Create query
-            $query = 'INSERT INTO ' . $this->qtable . ' (quote) VALUES (:quote)';
+            $query = 'INSERT INTO ' . $this->qtable . ' (quote, author_id, category_id) VALUES (:quote, :author_id, :category_id)';
             $query2 = 'SELECT max(id) FROM ' . $this->qtable . ' WHERE id in (SELECT id FROM ' . $this->qtable . ' WHERE quote = :quote)';
 
             // Prepare statement
@@ -162,9 +162,13 @@
 
             // Clean data
             $this->quote = htmlspecialchars(strip_tags($this->quote));
+            $this->author_id = htmlspecialchars(strip_tags($this->author_id));
+            $this->category_id = htmlspecialchars(strip_tags($this->category_id));
 
             // Bind data
             $stmt->bindParam(':quote', $this->quote);
+            $stmt->bindParam(':author_id', $this->author_id);
+            $stmt->bindParam(':category_id', $this->category_id);
             $stmt2->bindParam(':quote', $this->quote);
 
             // Execute query
@@ -191,7 +195,9 @@
         // Update quote
         public function update() {
             // Create query
-            $query = 'UPDATE ' . $this->qtable . ' SET quote = :quote WHERE id = :id';
+            $query = 'UPDATE ' . $this->qtable . '
+            SET (quote, author_id, category_id) = (:quote, :author_id, :category_id)
+            WHERE id = :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
@@ -199,10 +205,14 @@
             // Clean data
             $this->quote = htmlspecialchars(strip_tags($this->quote));
             $this->id = htmlspecialchars(strip_tags($this->id));
+            $this->author_id = htmlspecialchars(strip_tags($this->author_id));
+            $this->category_id = htmlspecialchars(strip_tags($this->category_id));
 
             // Bind data
             $stmt->bindParam(':quote', $this->quote);
             $stmt->bindParam(':id', $this->id);
+            $stmt->bindParam(':author_id', $this->author_id);
+            $stmt->bindParam(':category_id', $this->category_id);
 
             // Execute query
             if($stmt->execute()) {

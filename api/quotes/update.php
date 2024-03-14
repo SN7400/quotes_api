@@ -7,6 +7,8 @@
 
     include_once '../../config/Database.php';
     include_once '../../models/Quote.php';
+    include_once '../../models/Author.php';
+    include_once '../../models/Category.php';
 
     // Instantiate DB & connect
     $database = new Database();
@@ -23,10 +25,28 @@
         // Set id for update
         $quote->id = $data->id;
 
-        // Check if quote_id exists before updating
-        if($quote->read_single()) {
+        // Check if quote_id, author_id, and category_id are valid before proceeding with create
+        $author = new Author($db);
+        $author->id = $data->author_id;
+        $category = new Category($db);
+        $category->id = $data->category_id;
+        if(!$author->read_single()) {
+            echo json_encode(
+                array('message' => 'author_id Not Found')
+            );
+        } elseif(!$category->read_single()) {
+            echo json_encode(
+                array('message' => 'category_id Not Found')
+            );
+        } elseif (!$quote->read_single()) {
+            echo json_encode(
+                array('message' => 'quote_id Not Found')
+            );
+        } else {
             // Set quote for update
             $quote->quote = $data->quote;
+            $quote->author_id = $data->author_id;
+            $quote->category_id = $data->category_id;
             // Update quote
             $quote->update();
             // Read updated record and prepare array
@@ -34,14 +54,10 @@
             $quote_arr = array(
                 'id' => $quote->id,
                 'quote' => $quote->quote,
+                'author' => $quote->author,
+                'category' => $quote->category
             );
             // Make JSON
             print_r(json_encode($quote_arr));
-        } else {
-            // Return message from read_single() that quote_id is not found
-            echo json_encode(
-                array('message' => 'quote_id Not Found')
-            );
         }
-
     }
