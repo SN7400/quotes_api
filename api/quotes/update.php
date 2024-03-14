@@ -40,7 +40,7 @@
             );
         } elseif (!$quote->read_single()) {
             echo json_encode(
-                array('message' => 'quote_id Not Found')
+                array('message' => 'No Quotes Found')
             );
         } else {
             // Set quote for update
@@ -50,12 +50,12 @@
             // Update quote
             $quote->update();
             // Read updated record and prepare array
-            $quote->read_single();
+            //$quote->read_single();
             $quote_arr = array(
                 'id' => $quote->id,
                 'quote' => $quote->quote,
-                'author' => $quote->author,
-                'category' => $quote->category
+                'author_id' => $quote->author_id,
+                'category_id' => $quote->category_id
             );
             // Make JSON
             print_r(json_encode($quote_arr));

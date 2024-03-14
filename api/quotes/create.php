@@ -39,12 +39,12 @@
         $quote->author_id = $data->author_id;
         $quote->category_id = $data->category_id;
         $quote->create();
-        $quote->read_single();
+        //$quote->read_single();
         $quote_arr = array(
             'id' => $quote->id,
             'quote' => $quote->quote,
-            'author' => $quote->author,
-            'category' => $quote->category
+            'author_id' => $quote->author_id,
+            'category_id' => $quote->category_id
         );
 
         // Make JSON
