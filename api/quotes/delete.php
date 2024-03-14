@@ -6,7 +6,7 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Author.php';
+    include_once '../../models/Quote.php';
 
     // Instantiate DB & connect
     $database = new Database();
@@ -17,28 +17,28 @@
             array('message' => 'Missing Required Parameters')
         );
     } else {
-        // Instantiate Author object
-        $author = new Author($db);
+        // Instantiate Quote object
+        $quote = new Quote($db);
 
         // Set id for update
-        $author->id = $data->id;
+        $quote->id = $data->id;
 
-        // Check if author_id exists
-        $author->read_single();
-        if(isset($author->author)) {
+        // Check if quote_id exists
+        $quote->read_single();
+        if(isset($quote->quote)) {
             // Save ID
-            $id = $author->id;
-            // Delete author
-            $author->delete();
-            $author_arr = array(
+            $id = $quote->id;
+            // Delete quote
+            $quote->delete();
+            $quote_arr = array(
                 'id' => $id,
             );
             // Make JSON
-            print_r(json_encode($author_arr));
+            print_r(json_encode($quote_arr));
         } else {
-            // Return message from read_single() that author_id is not found
+            // Return message from read_single() that quote_id is not found
             echo json_encode(
-                array('message' => 'author_id Not Found')
+                array('message' => 'quote_id Not Found')
             );
         }
     }

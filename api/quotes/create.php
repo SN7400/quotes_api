@@ -6,9 +6,9 @@
     header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
 
     include_once '../../config/Database.php';
-    include_once '../../models/Author.php';
+    include_once '../../models/Quote.php';
 
-    if(!isset($data) || !isset($data->author)) {
+    if(!isset($data) || !isset($data->quote)) {
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );
@@ -17,15 +17,15 @@
         $database = new Database();
         $db = $database->connect();
 
-        // Instantiate author object
-        $author = new Author($db);
-        $author->author = $data->author;
-        $author->create();
-        $author_arr = array(
-            'id' => $author->id,
-            'author' => $author->author,
+        // Instantiate quote object
+        $quote = new Quote($db);
+        $quote->quote = $data->quote;
+        $quote->create();
+        $quote_arr = array(
+            'id' => $quote->id,
+            'quote' => $quote->quote,
         );
 
         // Make JSON
-        print_r(json_encode($author_arr));
+        print_r(json_encode($quote_arr));
     }
