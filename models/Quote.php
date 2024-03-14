@@ -140,10 +140,13 @@
 
             // Set properties
             if($row) {
-                $this->id = $row['id'];
+                //$this->id = $row['id'];
                 $this->quote = $row['quote'];
                 $this->author = $row['author'];
                 $this->category = $row['category'];
+                return true;
+            } else {
+                return false;
             }
         }
 

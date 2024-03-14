@@ -23,9 +23,8 @@
         // Set id for update
         $category->id = $data->id;
 
-        // Check if category_id exists
-        $category->read_single();
-        if(isset($category->category)) {
+        // Check if category_id exists before deleting
+        if($category->read_single()) {
             // Save ID
             $id = $category->id;
             // Delete category

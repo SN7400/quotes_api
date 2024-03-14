@@ -23,9 +23,8 @@
         // Set id for update
         $quote->id = $data->id;
 
-        // Check if quote_id exists
-        $quote->read_single();
-        if(isset($quote->quote)) {
+        // Check if quote_id exists before deleting
+        if($quote->read_single()) {
             // Save ID
             $id = $quote->id;
             // Delete quote
@@ -38,7 +37,7 @@
         } else {
             // Return message from read_single() that quote_id is not found
             echo json_encode(
-                array('message' => 'quote_id Not Found')
+                array('message' => 'No Quotes Found')
             );
         }
     }

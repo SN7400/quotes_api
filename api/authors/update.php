@@ -23,9 +23,8 @@
         // Set id for update
         $author->id = $data->id;
 
-        // Check if author_id exists
-        $author->read_single();
-        if(isset($author->author)) {
+        // Check if author_id exists before updating
+        if($author->read_single()) {
             // Set author for update
             $author->author = $data->author;
             // Update author

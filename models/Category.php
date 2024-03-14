@@ -40,13 +40,13 @@
                 FROM
                 ' . $this->table . ' a
                 WHERE
-                    a.id = ?;';
+                    a.id = :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Bind ID
-            $stmt->bindParam(1, $this->id);
+            $stmt->bindParam(':id', $this->id);
 
             //Execute query
             $stmt->execute();
@@ -56,6 +56,9 @@
             // Set properties
             if($row) {
                 $this->category = $row['category'];
+                return true;
+            } else {
+                return false;
             }
         }
 

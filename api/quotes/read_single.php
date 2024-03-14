@@ -16,14 +16,7 @@
     // Get ID
     $quote->id = isset($_GET['id']) ? $_GET['id'] : die();
 
-    // Get quote
-    $quote->read_single();
-
-    if(!isset($quote->quote)) {
-        echo json_encode(
-            array('message' => 'No Quotes Found')
-        );
-    } else {
+    if($quote->read_single()) {
         // Create array
         $quote_arr = array(
             'id' => $quote->id,
@@ -34,4 +27,8 @@
 
         // Make JSON
         print_r(json_encode($quote_arr));
+    } else {
+        echo json_encode(
+            array('message' => 'No Quotes Found')
+        );
     }

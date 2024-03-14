@@ -8,7 +8,7 @@
     include_once '../../config/Database.php';
     include_once '../../models/Quote.php';
 
-    if(!isset($data) || !isset($data->quote)) {
+    if(!isset($data) || !isset($data->quote) || !isset($data->author) || !isset($data->category)) {
         echo json_encode(
             array('message' => 'Missing Required Parameters')
         );
@@ -24,6 +24,8 @@
         $quote_arr = array(
             'id' => $quote->id,
             'quote' => $quote->quote,
+            'author' => $quote->author,
+            'category' => $quote->category
         );
 
         // Make JSON

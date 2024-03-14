@@ -23,9 +23,8 @@
         // Set id for update
         $quote->id = $data->id;
 
-        // Check if quote_id exists
-        $quote->read_single();
-        if(isset($quote->quote)) {
+        // Check if quote_id exists before updating
+        if($quote->read_single()) {
             // Set quote for update
             $quote->quote = $data->quote;
             // Update quote

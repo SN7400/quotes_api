@@ -23,9 +23,8 @@
         // Set id for update
         $author->id = $data->id;
 
-        // Check if author_id exists
-        $author->read_single();
-        if(isset($author->author)) {
+        // Check if author_id exists before deleting
+        if($author->read_single()) {
             // Save ID
             $id = $author->id;
             // Delete author

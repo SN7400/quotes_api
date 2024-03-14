@@ -40,13 +40,13 @@
                 FROM
                 ' . $this->table . ' a
                 WHERE
-                    a.id = ?;';
+                    a.id = :id';
 
             // Prepare statement
             $stmt = $this->conn->prepare($query);
 
             // Bind ID
-            $stmt->bindParam(1, $this->id);
+            $stmt->bindParam(':id', $this->id);
 
             //Execute query
             $stmt->execute();
@@ -56,6 +56,9 @@
             // Set properties
             if($row) {
                 $this->author = $row['author'];
+                return true;
+            } else {
+                return false;
             }
         }
 
@@ -63,6 +66,7 @@
         public function create() {
             // Create query
             $query = 'INSERT INTO ' . $this->table . ' (author) VALUES (:author)';
+            // Another query to get the highest (i.e., most recently created) ID for this author
             $query2 = 'SELECT max(id) FROM ' . $this->table . ' WHERE id in (SELECT id FROM ' . $this->table . ' WHERE author = :author)';
 
             // Prepare statement
